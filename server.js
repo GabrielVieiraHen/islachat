@@ -6,21 +6,21 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Servir os arquivos estáticos (HTML, CSS, JS) da pasta public
+// Servir arquivos estáticos da pasta public
 app.use(express.static('public'));
 
-// Configuração do WebSocket
+// Evento quando um cliente se conecta
 io.on('connection', (socket) => {
-    console.log('Um usuário conectou.');
+    console.log('Um usuário se conectou.');
 
-    // Quando um usuário envia uma mensagem
+    // Quando um usuário envia uma mensagem, o servidor transmite para todos os outros clientes
     socket.on('chat message', (msg) => {
-        io.emit('chat message', msg); // Enviar mensagem para todos os clientes
+        io.emit('chat message', msg); // Envia a mensagem para todos os usuários conectados
     });
 
-    // Quando um usuário se desconecta
+    // Quando um cliente se desconecta
     socket.on('disconnect', () => {
-        console.log('Um usuário desconectou.');
+        console.log('Um usuário se desconectou.');
     });
 });
 
