@@ -7,7 +7,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 // Servir arquivos estáticos da pasta public
-app.use(express.static('public'));
+app.use(express.static('public'));  // Aqui você serve os arquivos da pasta public
 
 // Evento quando um cliente se conecta
 io.on('connection', (socket) => {
