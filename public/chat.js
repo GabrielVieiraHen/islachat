@@ -1,25 +1,50 @@
-// Conectar ao servidor WebSocket
+// Conectar ao servidor usando Socket.IO
 const socket = io();
 
-// Referências dos elementos HTML
-const form = document.getElementById('form');
+// Referências aos elementos HTML
+const sendButton = document.getElementById('sendButton');
 const messageInput = document.getElementById('messageInput');
-const messagesDiv = document.getElementById('messages');
+const chatContainer = document.getElementById('chatContainer');
 
-// Enviar mensagem para o servidor
-form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Previne o envio padrão do formulário
-    
-    const message = messageInput.value; // Pega a mensagem do input
-    socket.emit('chat message', message); // Envia a mensagem para o servidor
+// Função para enviar uma mensagem
+function sendMessage() {
+    const message = messageInput.value;
+    if (message.trim() !== "") {
+        // Enviar a mensagem para o servidor
+        socket.emit('sendMessage', message);
 
-    messageInput.value = ''; // Limpar o campo de entrada
+        // Adicionar a mensagem localmente para o usuário
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'user'); // Estilo de mensagem do usuário
+        messageElement.textContent = message;
+        chatContainer.appendChild(messageElement);
+
+        // Rola até o final para a nova mensagem
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Limpa o campo de entrada
+        messageInput.value = "";
+    }
+}
+
+// Adicionar o ouvinte de evento para o botão "Enviar"
+sendButton.addEventListener('click', sendMessage);
+
+// Permitir o envio de mensagem pressionando a tecla Enter
+messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
 });
 
-// Receber mensagens do servidor e exibir
-socket.on('chat message', (msg) => {
+// Escutando as mensagens de outros usuários (emitidas pelo servidor)
+socket.on('newMessage', (message) => {
+    // Adicionar a mensagem enviada por outro usuário
     const messageElement = document.createElement('div');
-    messageElement.textContent = msg; // Exibe a mensagem
-    messagesDiv.appendChild(messageElement);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight; // Rola para a última mensagem
+    messageElement.classList.add('message'); // Estilo de mensagem do outro usuário
+    messageElement.textContent = message;
+    chatContainer.appendChild(messageElement);
+
+    // Rola até o final para a nova mensagem
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 });

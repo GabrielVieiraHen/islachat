@@ -1,23 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISLA Chat</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>ISLA Chat</h1>
-    <h2>Bem-vindo ao chat da faculdade!</h2>
-    
-    <div id="messages"></div> <!-- Onde as mensagens serão exibidas -->
-    
-    <form id="form">
-        <input id="messageInput" autocomplete="off" placeholder="Digite sua mensagem..." required />
-        <button type="submit">Enviar</button>
-    </form>
-    
-    <script src="/socket.io/socket.io.js"></script> <!-- Conexão com o Socket.IO -->
-    <script src="chat.js"></script> <!-- Agora o chat.js está aqui -->
+    <div id="chatContainer">
+        <!-- As mensagens serão inseridas aqui -->
+    </div>
+
+    <input id="messageInput" type="text" placeholder="Digite sua mensagem...">
+    <button id="sendButton">Enviar</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/chat.js"></script>
 </body>
 </html>
